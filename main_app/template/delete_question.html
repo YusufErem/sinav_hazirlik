@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soru Sil</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="bg-green">
+    <div class="container-fluid">
+        <div class="home-page">
+            <div class="row">
+                <div class="col-3">
+                    {% include 'user_info.html' %}
+                </div>
+                <div class="col-9">
+                    <div class="form">
+                        <h1>SORU SİL</h1>
+                        <p>Bu soruyu silmek istediğinizden emin misiniz?</p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn bg-blue">Evet, Sil</button>
+                            <a href="{% url 'question_detail' question.id %}" class="btn bg-blue">Hayır, Geri Dön</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

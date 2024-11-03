@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soru Detayları</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <style>
+        .bg-green {
+            background-color: rgb(141, 194, 111);
+        }
+        .detail-page {
+            width: 1080px;
+            padding: 8% 0 0;
+            margin: auto;
+        }
+        .bg-blue {
+            background-color: rgb(111, 141, 194);
+        }
+    </style>
+    <script>
+        function toggleCompleted() {
+            document.getElementById('completedForm').submit();
+        }
+    </script>
+</head>
+<body class="bg-green">
+    <div class="container-fluid">
+        <div class="detail-page">
+            <div class="row">
+                <div class="col-3">
+                    {% include 'user_info.html' %}
+                </div>
+                <div class="col-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ question.category.name }}</h5>
+                            <img src="{{ question.question_image.url }}" alt="Soru Resmi" class="card-img-top">
+                            <p class="card-text">{{ question.notes }}</p>
+                            {% if question.answer_image %}
+                                <img src="{{ question.answer_image.url }}" alt="Cevap Resmi" class="card-img-top">
+                            {% endif %}
+                            <p class="card-text">Hata Sebebi: {{ question.get_mistake_reason_display }}</p>
+                            <a href="{% url 'home' %}" class="btn bg-blue">Geri Dön</a>
+                            <a href="{% url 'edit_question' question.id %}" class="btn bg-blue">Düzenle</a>
+                            <a href="{% url 'delete_question' question.id %}" class="btn bg-blue">Sil</a>
+                            <form id="completedForm" method="post" action="{% url 'toggle_complete_question' question.id %}">
+                                {% csrf_token %}
+                                <label>
+                                    <input type="checkbox" name="completed" value="true" {% if question.completed %}checked{% endif %} onchange="toggleCompleted()">
+                                    Tamamlandı
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soru Düzenle</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="bg-green">
+    <div class="container-fluid">
+        <div class="home-page">
+            <div class="row">
+                <div class="col-3">
+                    {% include 'user_info.html' %}
+                </div>
+                <div class="col-9">
+                    <div class="form">
+                        <h1>SORU DÜZENLE</h1>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <select name="category" required>
+                                <option value="">Kategori Seçin</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if category.id == question.category.id %}selected{% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="file" name="question_image" accept="image/*"/>
+                            <input type="file" name="answer_image" accept="image/*"/>
+                            <textarea name="notes" placeholder="Notlar">{{ question.notes }}</textarea>
+                            <select name="mistake_reason">
+                                <option value="">Hata Sebebi Seçin</option>
+                                <option value="Lack of Knowledge" {% if question.mistake_reason == 'Lack of Knowledge' %}selected{% endif %}>Bilgi Eksikliği</option>
+                                <option value="Other Reasons" {% if question.mistake_reason == 'Other Reasons' %}selected{% endif %}>Diğer Sebepler</option>
+                            </select>
+                            <label>
+                                <input type="checkbox" name="completed" value="true" {% if question.completed %}checked{% endif %}>
+                                Tamamlandı
+                            </label>
+                            <button type="submit">Güncelle</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
